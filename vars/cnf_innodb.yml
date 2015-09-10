@@ -6,7 +6,7 @@ percona_mysql_innodb_buffer_pool_size_mb:
   comment: "This value should be assigned in MB" 
   option: innodb_buffer_pool_size
   variable:
-  value: "{{ ( ansible_memtotal_mb / 4 ) | int }}"
+  value: "{{ (ansible_memtotal_mb * 0.8) | int }}"
   include: true
   dynamic: false
 
@@ -22,7 +22,7 @@ percona_mysql_innodb_variables:
     comment:
     option: innodb_buffer_pool_instances
     variable:
-    value: 1
+    value: "{{ ansible_processor_cores }}"
     include: true
     dynamic: false
   percona_mysql_innodb_old_blocks_time:
@@ -57,14 +57,14 @@ percona_mysql_innodb_variables:
     comment:
     option: innodb_io_capacity
     variable: innodb_io_capacity
-    value: 200
+    value: "{{ percona_mysql_innodb_io_capacity }}"
     include: true
     dynamic: true
   percona_mysql_innodb_log_file_size:
-    comment:
+    comment: "You can't change log file size, requires special procedure"
     option: innodb_log_file_size
     variable:
-    value: 64M
+    value: 512M
     include: true
     dynamic: false
   percona_mysql_innodb_file_per_table:
@@ -99,14 +99,14 @@ percona_mysql_innodb_variables:
     comment:
     option: innodb_write_io_threads
     variable:
-    value: 4
+    value: "{{ ansible_processor_cores }}"
     include: true
     dynamic: false
   percona_mysql_innodb_read_io_threads:
     comment:
     option: innodb_read_io_threads
     variable:
-    value: 4
+    value: "{{ ansible_processor_cores }}"
     include: true
     dynamic: false
   percona_mysql_innodb_thread_concurrency:
@@ -127,7 +127,7 @@ percona_mysql_innodb_variables:
     comment:
     option: innodb_support_xa
     variable: innodb_support_xa
-    value: 'ON'
+    value: {{ 'OFF' if percona_mysql_install == "slave" else 'ON' }}
     include: true
     dynamic: true
   percona_mysql_innodb_autoinc_lock_mode:

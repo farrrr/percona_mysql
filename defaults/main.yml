@@ -8,6 +8,9 @@ percona_mysql_server_version: 5.6
 # MySQL service name
 percona_mysql_service_name: mysql
 
+# MySQL bind address
+percona_mysql_bind_address: "::"
+
 # Desired Server Role
 #   - master
 #   - slave
@@ -41,6 +44,13 @@ percona_mysql_user_password:
 # Installation user credentials
 percona_mysql_installation_user: vagrant
 percona_mysql_home_dir: /home
+
+# Storage Type      The innodb_io_capacity value
+# HDD               200
+# RAID 10 HDD       1,000
+# SSD               5,000
+# Fusion IO         10,000
+percona_mysql_innodb_io_capacity: 200
 
 #---------------------------------------------------------------
 # Percona MySQL Configuration Options
